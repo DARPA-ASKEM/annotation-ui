@@ -1,11 +1,14 @@
 <template>
       <div class="grid">
         <div  class="col">
+           <ParameterMenu ></ParameterMenu>
+ I       </div>
+        <div  class="col">
         
             <ImageComponent :image_src="image_src"></ImageComponent>
         </div>
         <div class="col">
-         <ExampleComponent v-if="isMounted" :extracted_data="table_data"></ExampleComponent>
+         <ExtractionTable v-if="isMounted" :extracted_data="table_data"></ExtractionTable>
 
         </div>
     </div>
@@ -14,8 +17,9 @@
 
 <script>
 // import Image from 'primevue/image';
-import ImageComponent from './image.vue'
-import ExampleComponent from './table.vue' 
+import ImageComponent from './Image.vue'
+import ExtractionTable from './Table.vue' 
+import ParameterMenu from './ParameterMenu.vue'
 
 // import fake_data from '../assets/fake_data.json';
 // import VueTable from 'vuejs-spreadsheet';
@@ -37,7 +41,8 @@ export default {
   components: {
       // Image,
       ImageComponent,
-      ExampleComponent
+      ExtractionTable,
+      ParameterMenu
     },
   methods:{
     onSelect(selected){
@@ -77,7 +82,6 @@ export default {
 
       this.isMounted=true
 
-      console.log(this.table_data)
       this.image_src="data:image/jpeg;base64,"+this.extraction_data['image']
     })
   }}

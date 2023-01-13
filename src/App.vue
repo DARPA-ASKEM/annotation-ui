@@ -1,10 +1,10 @@
 <template>
-  <AnnotationComponent msg="Welcome to Your Vue.js App"/>
+  <AnnotationComponent msg="Started Annotation UI"/>
   
 </template>
 
 <script>
-import AnnotationComponent from './components/annotation.vue'
+import AnnotationComponent from './components/Annotation.vue'
 export default {
   name: 'App',
   components: {

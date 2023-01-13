@@ -27,8 +27,7 @@
         // Image,
       },
     beforeMount(){
-      
-      console.log(this.image_src)
+      //console.log(`Image source: ${this.image_src}`)
     }
   
   }

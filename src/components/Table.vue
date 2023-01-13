@@ -19,7 +19,7 @@
   registerAllModules();
 
   export default {
-  name: 'ExampleComponent',
+  name: 'ExtractionTable',
   data() {
     return {
       hotSettingss: {
@@ -100,14 +100,12 @@
 
     },
     beforeMount(){
-      console.log(this.extraction_data    )
       this.hotSettings["data"]=this.extracted_data
 
     },
     mounted(){
-      console.log(this.extracted_data)
-      let hot=document.getElementById('test')
-      console.log(hot.getSelected())
+      //console.log(this.extracted_data)
+      //let hot=document.getElementById('test')
     }
   };
 </script>
