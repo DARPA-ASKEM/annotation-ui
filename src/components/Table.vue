@@ -7,7 +7,7 @@
          v-model:visible="visibleMenu"
          position=left
     >
-	<ParameterMenu/>
+	<ParameterMenu :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}"/>
     </Sidebar>
   </div>
 
