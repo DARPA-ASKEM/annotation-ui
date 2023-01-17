@@ -15,6 +15,7 @@
 
 <script>
   import { HotTable } from '@handsontable/vue3';
+  import Handsontable from 'handsontable';
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
@@ -27,10 +28,11 @@
   data() {
     return {
       selectedValue: "value",
+      annotatedCells: [],
       hotSettings: {
         data: [],
         colHeaders: true,
-        selectionMode: 'single',
+        selectionMode: 'multiple',
         contextMenu: {
           items: {
             'row_above': {
@@ -61,21 +63,42 @@
 
     },
     methods: {
-        afterSelectionEnd: function (row, column) {
-            let hotTable = this.$refs.hotTableComponent.hotInstance;
-            let value = hotTable.getDataAtCell(row, column);
-            console.log(value);
-            this.selectedValue = value;
-            this.$emit('cell-selected', row, column, value);
+        // afterSelectionEnd: function (row, column) {
+        //   let hotTable = this.$refs.hotTableComponent.hotInstance;
+        //   let value = hotTable.getDataAtCell(row, column);
+        //   this.selectedValue = value;
+        //   this.$emit('cell-selected', row, column, value);
+        // },
+        annotate: function (hotTable, td, row, col, prop, initialValue) {
+          console.log("annotating", this);
+          console.log(arguments);
+          let value = hotTable.getDataAtCell(row, col);
+          this.selectedValue = value;
+          this.$emit('cell-selected', row, col, value);
+        },
+        renderCell: function (hotTable, td, row, col, prop, value) {
+          td.innerText = value;
+          let button = document.createElement('button');
+          button.innerHTML = " ";
+          button.style.backgroundImage = 'url("https://upload.wikimedia.org/wikipedia/commons/e/ec/Circle-icons-pencil_2.svg")';
+          button.style.height = '1.4em';
+          button.style.width = '1.4em';
+          button.style.position = 'relative';
+          button.style.backgroundPosition = 'center';
+          button.style.backgroundSize = 'contain';
+          button.addEventListener("click", () => this.annotate(hotTable, td, row, col, prop, value), false);
+          td.appendChild(button);
+          return td;
         },
     },
     beforeMount(){
-      this.hotSettings["data"]=this.extracted_data
+      this.hotSettings["data"]=this.extracted_data;
+      this.hotSettings['renderer'] = this.renderCell;
 
     },
     mounted(){
-      let hotTable = this.$refs.hotTableComponent.hotInstance;
-      hotTable.addHook("afterSelectionEnd", this.afterSelectionEnd, this);
+      // let hotTable = this.$refs.hotTableComponent.hotInstance;
+      // hotTable.addHook("afterSelectionEnd", this.afterSelectionEnd, this);
     }
   };
 </script>
