@@ -1,11 +1,15 @@
 <template>
   <div id="example1">
-    <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
+    <hot-table ref="hotTableComponent" :settings="hotSettings">
+    </hot-table><br/>
     <button v-on:click="swapHotData" class="controls">Load new data!</button>
+    <div>
+    {{ selectedValue }}
+    </div>
   </div>
 
   <!-- <hot-table :class="className" :style="style" settings={settings} :data="extracted_data" :rowHeaders="true" :colHeaders="true"></hot-table> -->
-  <hot-table id="test" :settings="hotSettingss"></hot-table>
+  <!-- <hot-table id="test" :settings="hotSettingss"></hot-table> -->
 
 </template>
 
@@ -22,28 +26,11 @@
   name: 'ExtractionTable',
   data() {
     return {
-      hotSettingss: {
-        data: [
-          ['A1', 'B1', 'C1', 'D1', 'E1'],
-          ['A2', 'B2', 'C2', 'D2', 'E2'],
-          ['A3', 'B3', 'C3', 'D3', 'E3'],
-          ['A4', 'B4', 'C4', 'D4', 'E4'],
-          ['A5', 'B5', 'C5', 'D5', 'E5'],
-        ],
-        colHeaders: true,
-        height: 'auto',
-        licenseKey: 'non-commercial-and-evaluation'
-      },
+      selectedValue: "value",
       hotSettings: {
-        data: [
-          ['A1', 'B1', 'C1', 'D1', 'E1'],
-          ['A2', 'B2', 'C2', 'D2', 'E2'],
-          ['A3', 'B3', 'C3', 'D3', 'E3'],
-          ['A4', 'B4', 'C4', 'D4', 'E4'],
-          ['A5', 'B5', 'C5', 'D5', 'E5'],
-        ],
+        data: [],
         colHeaders: true,
-        selectionMode: 'multiple',
+        selectionMode: 'single',
         contextMenu: {
           items: {
             'row_above': {
@@ -66,32 +53,6 @@
       }
     }
   },
-    // data() {
-    //   return {
-    //     settings:{
-    //       contextMenu: true,
-    //       licenseKey:'non-commercial-and-evaluation',
-    //       contextMenu:{
-    //         items: {
-    //         'row_above': {
-    //           name: 'Insert row above this one (custom name)'
-    //         },
-    //         'row_below': {},
-    //         'separator': ContextMenu.SEPARATOR,
-    //       }}
-          
-    //     },
-    //     data: [
-    //       ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-    //       ['2016', 10, 11, 12, 13],
-    //       ['2017', 20, 11, 14, 13],
-    //       ['2018', 30, 15, 12, 13]
-    //     ],
-    //     className: 'my-custom-classname',
-    //   style: 'height:auto; width:auto, overflow: hidden; border: 1px solid blue;'
-        
-    //   };
-    // },
     props: {
       extracted_data: Array
     },   
@@ -99,13 +60,22 @@
       HotTable,
 
     },
+    methods: {
+        afterSelectionEnd: function (row, column) {
+            let hotTable = this.$refs.hotTableComponent.hotInstance;
+            let value = hotTable.getDataAtCell(row, column);
+            console.log(value);
+            this.selectedValue = value;
+            this.$emit('cell-selected', row, column, value);
+        },
+    },
     beforeMount(){
       this.hotSettings["data"]=this.extracted_data
 
     },
     mounted(){
-      //console.log(this.extracted_data)
-      //let hot=document.getElementById('test')
+      let hotTable = this.$refs.hotTableComponent.hotInstance;
+      hotTable.addHook("afterSelectionEnd", this.afterSelectionEnd, this);
     }
   };
 </script>

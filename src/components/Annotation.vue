@@ -1,8 +1,8 @@
 <template>
       <div class="grid">
-        <div  class="col">
+        <!-- <div  class="col">
            <ParameterMenu ></ParameterMenu>
- I       </div>
+ I       </div> -->
         <div  class="col">
         
             <ImageComponent :image_src="image_src"></ImageComponent>
