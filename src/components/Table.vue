@@ -2,6 +2,13 @@
   <div id="example1">
     <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
     <button v-on:click="swapHotData" class="controls">Load new data!</button>
+    <button @click="visibleMenu = true">Add parameter</button>
+    <Sidebar 
+         v-model:visible="visibleMenu"
+         position=left
+    >
+	<ParameterMenu/>
+    </Sidebar>
   </div>
 
   <!-- <hot-table :class="className" :style="style" settings={settings} :data="extracted_data" :rowHeaders="true" :colHeaders="true"></hot-table> -->
@@ -10,16 +17,24 @@
 </template>
 
 <script>
+  import { ref } from 'vue';
   import { HotTable } from '@handsontable/vue3';
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
+  import Sidebar from 'primevue/sidebar';
+  import ParameterMenu from './ParameterMenu'
 
   // register Handsontable's modules
   registerAllModules();
 
   export default {
   name: 'ExtractionTable',
+  setup() {
+    const visibleMenu = ref(false);
+
+    return { visibleMenu };
+  },
   data() {
     return {
       hotSettingss: {
@@ -97,7 +112,8 @@
     },   
     components: {
       HotTable,
-
+      Sidebar,
+      ParameterMenu
     },
     beforeMount(){
       this.hotSettings["data"]=this.extracted_data

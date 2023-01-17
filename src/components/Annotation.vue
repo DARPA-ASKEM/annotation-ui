@@ -1,9 +1,6 @@
 <template>
       <div class="grid">
         <div  class="col">
-           <ParameterMenu ></ParameterMenu>
- I       </div>
-        <div  class="col">
         
             <ImageComponent :image_src="image_src"></ImageComponent>
         </div>
@@ -19,7 +16,6 @@
 // import Image from 'primevue/image';
 import ImageComponent from './Image.vue'
 import ExtractionTable from './Table.vue' 
-import ParameterMenu from './ParameterMenu.vue'
 
 // import fake_data from '../assets/fake_data.json';
 // import VueTable from 'vuejs-spreadsheet';
@@ -42,7 +38,6 @@ export default {
       // Image,
       ImageComponent,
       ExtractionTable,
-      ParameterMenu
     },
   methods:{
     onSelect(selected){

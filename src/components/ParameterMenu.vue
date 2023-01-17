@@ -1,29 +1,39 @@
 <template>
 <div>
-	<Sidebar v-model:visible="visibleMenu" position="bottom">
-		<h3>Annotation should happen here</h3>
-	</Sidebar>
-  <Button icon="pi pi-arrow-right" @click="visibleMenu = true" />
+        <h3>Annotating parameter:</h3>
+        <div>
+                <div>Parameter name</div>
+                <input />
+        </div>
+        <div>
+                <div>Default value</div>
+                <input />
+        </div>
+        <div>
+                <div>Associated CURIE</div>
+                <input />
+        </div>
+        <div>
+                <div>Is this a state variable?</div>
+                <input type="radio" id="confirm" :value="true" v-model="isState" />
+                <label for="confirm">Yes</label>
+                <input type="radio" id="deny" :value="false" v-model="isState" />
+                <label for="deny">No</label>
+        </div>
+        <button>Add to Parameter List</button>
 </div>
 </template>
 
 <script>
 import { ref } from 'vue';
-import Sidebar from 'primevue/sidebar';
-import Button from 'primevue/button'; // DELETE
 
-
-const visibleMenu = ref(false);
 export default {
 	name: 'ParameterMenu',
-	components: {
-		Sidebar,
-		Button
-	},
-	setup() {
-		const visibleMenu = ref(false);
+        setup () {
+                const isState = ref(true);
 
-		return { visibleMenu }
-	}
+                return { isState };
+        }
 }
 </script>
+
