@@ -3,12 +3,7 @@
     <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
     <button v-on:click="swapHotData" class="controls">Load new data!</button>
     <button @click="visibleMenu = true">Add parameter</button>
-    <Sidebar 
-         v-model:visible="visibleMenu"
-         position=left
-    >
-	<ParameterMenu :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}"/>
-    </Sidebar>
+    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}"/>
   </div>
 
   <!-- <hot-table :class="className" :style="style" settings={settings} :data="extracted_data" :rowHeaders="true" :colHeaders="true"></hot-table> -->
@@ -22,7 +17,6 @@
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
-  import Sidebar from 'primevue/sidebar';
   import ParameterMenu from './ParameterMenu'
 
   // register Handsontable's modules
@@ -112,7 +106,6 @@
     },   
     components: {
       HotTable,
-      Sidebar,
       ParameterMenu
     },
     beforeMount(){

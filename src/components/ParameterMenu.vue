@@ -1,5 +1,9 @@
 <template>
-<div>
+
+<Sidebar 
+     v-model:visible="openMenu"
+     position=left
+>
         <h3>Annotating parameter:</h3>
         <div>
                 <div>Parameter name</div>
@@ -25,16 +29,17 @@
                 <label for="deny">No</label>
         </div>
         <button @click="submit">Add to Parameter List</button>
-</div>
+</Sidebar>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed, defineComponent } from 'vue';
+import Sidebar from 'primevue/sidebar';
 
-export default {
+export default defineComponent({
 	name: 'ParameterMenu',
-        props: ["appendParameter"],
-        setup (props) {
+        props: ["appendParameter", "visibleMenu"],
+        setup (props, { emit }) {
                 const formData = ref({
                         "name": "",
                         "type": "",
@@ -43,10 +48,18 @@ export default {
                         "stateVariable": true,
                 });
 
+                const openMenu = computed({
+                        get: () => props.visibleMenu,
+                        set: sidebarValue => emit('update:visibleMenu', sidebarValue),
+                });
+
                 const submit = () => props.appendParameter(formData.value);
 
-                return { formData, submit };
-        }
-}
+                return { formData, submit, openMenu };
+        },
+        components: {
+          Sidebar
+        },
+})
 </script>
 
