@@ -1,9 +1,7 @@
 <template>
 <div>
-	<Sidebar v-model:visible="visibleMenu" position="bottom">
-		<h3>Annotation should happen here</h3>
-	</Sidebar>
-  <Button icon="pi pi-arrow-right" @click="visibleMenu = true" />
+	
+  <!-- <Button icon="pi pi-arrow-right" @click="visibleMenu = true" /> -->
 </div>
 </template>
 
@@ -16,14 +14,18 @@ import Button from 'primevue/button'; // DELETE
 const visibleMenu = ref(false);
 export default {
 	name: 'ParameterMenu',
+	data() {
+        return {
+          visibleMenu:true
+        }
+      },
 	components: {
 		Sidebar,
 		Button
 	},
-	setup() {
+	methods:{
 //		const visibleMenu = ref(false);
-
-		return { visibleMenu }
+		
 	}
 }
 </script>

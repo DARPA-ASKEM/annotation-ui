@@ -4,6 +4,9 @@
     </hot-table><br/>
     <!-- <button v-on:click="swapHotData" class="controls">Load new data!</button> -->
     <div>
+      <Sidebar v-model:visible="visibleMenu" position="right">
+        <ParameterAnnotationForm :selectedValue="selectedValue"></ParameterAnnotationForm>
+      </Sidebar>
       <i class="pi-file-edit" style="font-size: 2rem"></i>
 
     {{ selectedValue }}
@@ -18,10 +21,11 @@
 <script>
   import { HotTable } from '@handsontable/vue3';
   import Handsontable from 'handsontable';
+  import Sidebar from 'primevue/sidebar';
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
-
+ import ParameterAnnotationForm from './ParameterAnnotationForm.vue'
   // register Handsontable's modules
   registerAllModules();
 
@@ -29,6 +33,7 @@
   name: 'ExtractionTable',
   data() {
     return {
+      visibleMenu:false,
       selectedValue: "value",
       annotatedCells: [],
       hotSettings: {
@@ -62,6 +67,8 @@
     },   
     components: {
       HotTable,
+      Sidebar,
+      ParameterAnnotationForm
 
     },
     methods: {
@@ -76,6 +83,7 @@
           console.log(arguments);
           let value = hotTable.getDataAtCell(row, col);
           this.selectedValue = value;
+          this.visibleMenu=true
           this.$emit('cell-selected', row, col, value);
         },
         renderCell: function (hotTable, td, row, col, prop, value) {
