@@ -2,8 +2,10 @@
   <div id="example1">
     <hot-table ref="hotTableComponent" :settings="hotSettings">
     </hot-table><br/>
-    <button v-on:click="swapHotData" class="controls">Load new data!</button>
+    <!-- <button v-on:click="swapHotData" class="controls">Load new data!</button> -->
     <div>
+      <i class="pi-file-edit" style="font-size: 2rem"></i>
+
     {{ selectedValue }}
     </div>
   </div>
@@ -63,12 +65,12 @@
 
     },
     methods: {
-        // afterSelectionEnd: function (row, column) {
-        //   let hotTable = this.$refs.hotTableComponent.hotInstance;
-        //   let value = hotTable.getDataAtCell(row, column);
-        //   this.selectedValue = value;
-        //   this.$emit('cell-selected', row, column, value);
-        // },
+        afterSelectionEnd: function (row, column) {
+          let hotTable = this.$refs.hotTableComponent.hotInstance;
+          let value = hotTable.getDataAtCell(row, column);
+          this.selectedValue = value;
+          this.$emit('cell-selected', row, column, value);
+        },
         annotate: function (hotTable, td, row, col, prop, initialValue) {
           console.log("annotating", this);
           console.log(arguments);
@@ -79,12 +81,25 @@
         renderCell: function (hotTable, td, row, col, prop, value) {
           td.innerText = value;
           let button = document.createElement('button');
-          button.innerHTML = " ";
-          button.style.backgroundImage = 'url("https://upload.wikimedia.org/wikipedia/commons/e/ec/Circle-icons-pencil_2.svg")';
+          // button.innerHTML = " ";
+          let icon = document.createElement('i')
+          icon.className=" pi pi-file-edit"
+          icon.style.float="center"
+          icon.style
+          button.appendChild(icon)
+          // button.style.backgroundImage = 'url("https://upload.wikimedia.org/wikipedia/commons/e/ec/Circle-icons-pencil_2.svg")';
+          // button.style.display="flex";
+          // button.style.justify_content= "center";
+          button.style.align_items= "center";
+          button.style.backgroundColor="transparent"
+          button.style.border="none"
+
+          
           button.style.height = '1.4em';
           button.style.width = '1.4em';
           button.style.position = 'relative';
           button.style.backgroundPosition = 'center';
+          button.style.float="right";
           button.style.backgroundSize = 'contain';
           button.addEventListener("click", () => this.annotate(hotTable, td, row, col, prop, value), false);
           td.appendChild(button);
