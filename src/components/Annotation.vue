@@ -12,7 +12,7 @@
 
 <script setup>
 import axios from "axios"
-import ExtractionTable from './Table.vue' 
+import ExtractionTable from './ExtractionTable.vue' 
 import ImageComponent from './ImageComponent.vue'
 import {ref, onMounted} from 'vue'
 
