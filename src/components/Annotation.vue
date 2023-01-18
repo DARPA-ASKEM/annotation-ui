@@ -1,122 +1,51 @@
 <template>
       <div class="grid">
         <div  class="col">
-        
             <ImageComponent :image_src="image_src"></ImageComponent>
         </div>
         <div class="col-8">
          <ExtractionTable v-if="isMounted" :extracted_data="table_data"></ExtractionTable>
-
         </div>
     </div>
 
 </template>
 
-<script>
-// import Image from 'primevue/image';
-import ImageComponent from './Image.vue'
-import ExtractionTable from './Table.vue' 
-
-// import fake_data from '../assets/fake_data.json';
-// import VueTable from 'vuejs-spreadsheet';
+<script setup>
 import axios from "axios"
-export default {
-  name: 'AnnotationComponent',
-  props: {
-    msg: String
-  },
-  data() {
-        return {
-          jsondata: null,
-          image_src:"hi",
-          extraction_data:null,
-          table_data:null,
-          isMounted:false
-        }
-      },
-  components: {
-      // Image,
-      ImageComponent,
-      ExtractionTable,
-    },
-  methods:{
-    onSelect(selected){
-      console.log(selected)
-    }
-  },
-  mounted(){
-  },
-  //   getdata() {
-  //     console.log('e')
-  //     const result=fetch("https://xdd.wisc.edu/askem/object/e962b768-2969-479b-b90b-9beb372cf5bc")
-  //       .then((res) => {
-  //           res.json();
-  //           })
-  //       .then((d) => {
-  //         // d.data
-  //         console.log(d.data)
-  //         } )
-  //   console.log(result)    
+import ExtractionTable from './ExtractionTable.vue' 
+import ImageComponent from './ImageComponent.vue'
+import {ref, onMounted} from 'vue'
+
+const image_src=ref('')
+const table_data=ref([])
+const isMounted=ref(false)
 
          
-  // },
-  beforeMount(){
-    // this.jsondata=fake_data
-    axios.get("https://xdd.wisc.edu/askem/object/e962b768-2969-479b-b90b-9beb372cf5bc").then((resp) => {
-      this.extraction_data=resp.data['success']['data'][0]["properties"]
-      this.contentJson=this.extraction_data['contentJSON']
-      let headers=this.contentJson[0] 
-      this.columns=headers
+onMounted(() => {
 
-      let final=[]
-      for(let content in this.contentJson){
-        let row_extracted= Object.keys(this.contentJson[content]).map(key => this.contentJson[content][key]);
-        final.push(row_extracted)
-      }
-      this.table_data=final
+  // this.jsondata=fake_data
+  axios.get("https://xdd.wisc.edu/askem/object/e962b768-2969-479b-b90b-9beb372cf5bc").then((resp) => {
+    let extraction_data=resp.data['success']['data'][0]["properties"]
+    let contentJson=extraction_data['contentJSON']
 
-      this.isMounted=true
+    let array_of_rows=[]
+    for(let content in contentJson){
+      console.log(content)
+      let row_extracted= Object.keys(contentJson[content]).map(key => contentJson[content][key]);
+      array_of_rows.push(row_extracted)
+    }
+    table_data.value=array_of_rows
 
-      this.image_src="data:image/jpeg;base64,"+this.extraction_data['image']
-    })
-  }}
+    isMounted.value=true
 
+    image_src.value="data:image/jpeg;base64,"+extraction_data['image']
+  })
+  });
+  
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.column {
-  float: left;
-  width: 45.33%;
-  background-clip: content-box;
-
-  background-color: #D3D3D3;
-  padding:5px
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.image{
-  max-width: 100%;
-}
 
 </style>

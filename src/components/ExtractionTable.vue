@@ -1,7 +1,7 @@
 <template>
-  <div id="example1">
+  <div >
     <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
-    <button v-on:click="swapHotData" class="controls">Load new data!</button>
+    <!-- <button v-on:click="swapHotData" class="controls">Load new data!</button> -->
     <button @click="visibleMenu = true">Add parameter</button>
     <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}" :selectedValue="selectedValue" />
     <!--
@@ -15,10 +15,6 @@
     </div>
     -->
   </div>
-
-  <!-- <hot-table :class="className" :style="style" settings={settings} :data="extracted_data" :rowHeaders="true" :colHeaders="true"></hot-table> -->
-  <!-- <hot-table id="test" :settings="hotSettingss"></hot-table> -->
-
 </template>
 
 <script>
