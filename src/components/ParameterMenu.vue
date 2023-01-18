@@ -48,12 +48,15 @@ export default defineComponent({
                         "stateVariable": true,
                 });
 
-                const openMenu = computed({
+                var openMenu = computed({
                         get: () => props.visibleMenu,
                         set: sidebarValue => emit('update:visibleMenu', sidebarValue),
                 });
 
-                const submit = () => props.appendParameter(formData.value);
+                const submit = () => {
+                  props.appendParameter(formData.value);
+                  openMenu = false;
+                };
 
                 return { formData, submit, openMenu };
         },
