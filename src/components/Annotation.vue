@@ -14,7 +14,7 @@
 
 <script>
 // import Image from 'primevue/image';
-import ImageComponent from './Image.vue'
+import ImageComponent from './ImageComponent.vue'
 import ExtractionTable from './Table.vue' 
 
 // import fake_data from '../assets/fake_data.json';
