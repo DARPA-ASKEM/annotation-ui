@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed ,watch} from 'vue';
 import Sidebar from 'primevue/sidebar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
@@ -51,18 +51,24 @@ import Dropdown from 'primevue/dropdown'
 const emit = defineEmits(['update:visibleMenu']);
 const props = defineProps(["appendParameter", "visibleMenu", "selectedValue"]);
 
+
 const typeOptions = ref([
   {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
 ]);
 
+
+
+const selectedValue = computed({
+        get: () => props.selectedValue,
+        set: selected_v => emit('update:selectedValue', selected_v),
+});
 const formDefaults = {
         "name": "",
         "type": "",
         "curie": "",
-        "defaultValue": props.selectedValue,
+        "defaultValue": selectedValue,
         "stateVariable": true,
 };
-
 const visibleMenu = computed({
         get: () => props.visibleMenu,
         set: sidebarValue => emit('update:visibleMenu', sidebarValue),
