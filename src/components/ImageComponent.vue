@@ -8,7 +8,7 @@
 <script setup>
 
 import Image from 'primevue/image';
-import { defineProps, reactive } from "vue";
+import { defineProps } from "vue";
 const props = defineProps({
   image_src: String,
 });
