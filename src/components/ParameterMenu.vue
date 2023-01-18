@@ -1,7 +1,7 @@
 <template>
 
 <Sidebar 
-     v-model:visible="openMenu"
+     v-model:visible="visibleMenu"
      position=left
 >
 <div>
@@ -55,7 +55,7 @@ const typeOptions = ref([
   {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
 ]);
 
-const openMenu = computed({
+const visibleMenu = computed({
         get: () => props.visibleMenu,
         set: sidebarValue => emit('update:visibleMenu', sidebarValue),
 });
