@@ -4,7 +4,7 @@
         
             <ImageComponent :image_src="image_src"></ImageComponent>
         </div>
-        <div class="col">
+        <div class="col-8">
          <ExtractionTable v-if="isMounted" :extracted_data="table_data"></ExtractionTable>
 
         </div>

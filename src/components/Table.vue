@@ -4,16 +4,33 @@
     <button v-on:click="swapHotData" class="controls">Load new data!</button>
     <button @click="visibleMenu = true">Add parameter</button>
     <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}"/>
+    <hot-table ref="hotTableComponent" :settings="hotSettings">
+    </hot-table><br/>
+    <!-- <button v-on:click="swapHotData" class="controls">Load new data!</button> -->
+    <button @click="visibleMenu = true">Add parameter</button>
+    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}"/>
+    <!--
+    <div>
+      <Sidebar v-model:visible="visibleMenu" position="right">
+        <ParameterAnnotationForm :selectedValue="selectedValue"></ParameterAnnotationForm>
+      </Sidebar>
+      <i class="pi-file-edit" style="font-size: 2rem"></i>
+
+    {{ selectedValue }}
+    </div>
+    -->
   </div>
 
   <!-- <hot-table :class="className" :style="style" settings={settings} :data="extracted_data" :rowHeaders="true" :colHeaders="true"></hot-table> -->
-  <hot-table id="test" :settings="hotSettingss"></hot-table>
+  <!-- <hot-table id="test" :settings="hotSettingss"></hot-table> -->
 
 </template>
 
 <script>
   import { ref } from 'vue';
   import { HotTable } from '@handsontable/vue3';
+  import Handsontable from 'handsontable';
+  import Sidebar from 'primevue/sidebar';
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
@@ -31,26 +48,11 @@
   },
   data() {
     return {
-      hotSettingss: {
-        data: [
-          ['A1', 'B1', 'C1', 'D1', 'E1'],
-          ['A2', 'B2', 'C2', 'D2', 'E2'],
-          ['A3', 'B3', 'C3', 'D3', 'E3'],
-          ['A4', 'B4', 'C4', 'D4', 'E4'],
-          ['A5', 'B5', 'C5', 'D5', 'E5'],
-        ],
-        colHeaders: true,
-        height: 'auto',
-        licenseKey: 'non-commercial-and-evaluation'
-      },
+      visibleMenu:false,
+      selectedValue: "value",
+      annotatedCells: [],
       hotSettings: {
-        data: [
-          ['A1', 'B1', 'C1', 'D1', 'E1'],
-          ['A2', 'B2', 'C2', 'D2', 'E2'],
-          ['A3', 'B3', 'C3', 'D3', 'E3'],
-          ['A4', 'B4', 'C4', 'D4', 'E4'],
-          ['A5', 'B5', 'C5', 'D5', 'E5'],
-        ],
+        data: [],
         colHeaders: true,
         selectionMode: 'multiple',
         contextMenu: {
@@ -75,46 +77,65 @@
       }
     }
   },
-    // data() {
-    //   return {
-    //     settings:{
-    //       contextMenu: true,
-    //       licenseKey:'non-commercial-and-evaluation',
-    //       contextMenu:{
-    //         items: {
-    //         'row_above': {
-    //           name: 'Insert row above this one (custom name)'
-    //         },
-    //         'row_below': {},
-    //         'separator': ContextMenu.SEPARATOR,
-    //       }}
-          
-    //     },
-    //     data: [
-    //       ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-    //       ['2016', 10, 11, 12, 13],
-    //       ['2017', 20, 11, 14, 13],
-    //       ['2018', 30, 15, 12, 13]
-    //     ],
-    //     className: 'my-custom-classname',
-    //   style: 'height:auto; width:auto, overflow: hidden; border: 1px solid blue;'
-        
-    //   };
-    // },
     props: {
       extracted_data: Array
     },   
     components: {
       HotTable,
       ParameterMenu
+      Sidebar,
+    },
+    methods: {
+        afterSelectionEnd: function (row, column) {
+          let hotTable = this.$refs.hotTableComponent.hotInstance;
+          let value = hotTable.getDataAtCell(row, column);
+          this.selectedValue = value;
+          this.$emit('cell-selected', row, column, value);
+        },
+        annotate: function (hotTable, td, row, col, prop, initialValue) {
+          console.log("annotating", this);
+          console.log(arguments);
+          let value = hotTable.getDataAtCell(row, col);
+          this.selectedValue = value;
+          this.visibleMenu=true
+          this.$emit('cell-selected', row, col, value);
+        },
+        renderCell: function (hotTable, td, row, col, prop, value) {
+          td.innerText = value;
+          let button = document.createElement('button');
+          // button.innerHTML = " ";
+          let icon = document.createElement('i')
+          icon.className=" pi pi-file-edit"
+          icon.style.float="center"
+          icon.style
+          button.appendChild(icon)
+          // button.style.backgroundImage = 'url("https://upload.wikimedia.org/wikipedia/commons/e/ec/Circle-icons-pencil_2.svg")';
+          // button.style.display="flex";
+          // button.style.justify_content= "center";
+          button.style.align_items= "center";
+          button.style.backgroundColor="transparent"
+          button.style.border="none"
+
+          
+          button.style.height = '1.4em';
+          button.style.width = '1.4em';
+          button.style.position = 'relative';
+          button.style.backgroundPosition = 'center';
+          button.style.float="right";
+          button.style.backgroundSize = 'contain';
+          button.addEventListener("click", () => this.annotate(hotTable, td, row, col, prop, value), false);
+          td.appendChild(button);
+          return td;
+        },
     },
     beforeMount(){
-      this.hotSettings["data"]=this.extracted_data
+      this.hotSettings["data"]=this.extracted_data;
+      this.hotSettings['renderer'] = this.renderCell;
 
     },
     mounted(){
-      //console.log(this.extracted_data)
-      //let hot=document.getElementById('test')
+      // let hotTable = this.$refs.hotTableComponent.hotInstance;
+      // hotTable.addHook("afterSelectionEnd", this.afterSelectionEnd, this);
     }
   };
 </script>
