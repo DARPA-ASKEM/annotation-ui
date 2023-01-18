@@ -1,19 +1,8 @@
 <template>
   <div >
     <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
-    <!-- <button v-on:click="swapHotData" class="controls">Load new data!</button> -->
     <button @click="visibleMenu = true">Add parameter</button>
-    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}" :selectedValue="selectedValue" />
-    <!--
-    <div>
-      <Sidebar v-model:visible="visibleMenu" position="right">
-        <ParameterAnnotationForm :selectedValue="selectedValue"></ParameterAnnotationForm>
-      </Sidebar>
-      <i class="pi-file-edit" style="font-size: 2rem"></i>
-
-    {{ selectedValue }}
-    </div>
-    -->
+    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" :selectedValue="selectedValue" />
   </div>
 </template>
 
@@ -30,10 +19,12 @@
 
   export default {
   name: 'ExtractionTable',
-  setup() {
+  setup(props) {
     const visibleMenu = ref(false);
 
-    return { visibleMenu };
+    const appendParameter = props.appendParameter
+
+    return { visibleMenu, appendParameter };
   },
   data() {
     return {
@@ -67,7 +58,8 @@
     }
   },
     props: {
-      extracted_data: Array
+      extracted_data: Array,
+      appendParameter: Function
     },   
     components: {
       HotTable,

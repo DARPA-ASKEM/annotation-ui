@@ -1,7 +1,7 @@
 <template>
   <div>
-      <h3>Uploaded Image</h3>
-      <Image :imageStyle="{width:'100%'}" :imageClass="imageclass"  id="image_component" :src="image_src" alt="Image" preview />
+      <Image :imageStyle="{width:'100%'}" 
+             id="image-component" :src="imageSrc" alt="Extracted Table" preview />
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 import Image from 'primevue/image';
 import { defineProps } from "vue";
 const props = defineProps({
-  image_src: String,
+  imageSrc: String,
 });
 
 

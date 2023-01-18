@@ -1,10 +1,12 @@
 <template>
       <div class="grid">
-        <div  class="col">
-            <ImageComponent :image_src="image_src"></ImageComponent>
-        </div>
         <div class="col-8">
-         <ExtractionTable v-if="isMounted" :extracted_data="table_data"></ExtractionTable>
+            <ImageComponent :imageSrc="imageSrc" />
+            <ExtractionTable v-if="isMounted" :extracted_data="tableData" 
+                             :appendParameter="appendParameter"/>
+        </div>
+        <div class="col-4">
+            <ParameterList v-model:parameters="parameters"/>
         </div>
     </div>
 
@@ -14,12 +16,15 @@
 import axios from "axios"
 import ExtractionTable from './ExtractionTable.vue' 
 import ImageComponent from './ImageComponent.vue'
+import ParameterList from './ParameterList.vue' 
 import {ref, onMounted} from 'vue'
 
-const image_src=ref('')
-const table_data=ref([])
+const imageSrc=ref('')
+const tableData=ref([])
+const parameters=ref([])
 const isMounted=ref(false)
 
+const appendParameter = formData => {parameters.value.concat(formData); console.log(parameters.value);};
          
 onMounted(() => {
 
@@ -34,11 +39,11 @@ onMounted(() => {
       let row_extracted= Object.keys(contentJson[content]).map(key => contentJson[content][key]);
       array_of_rows.push(row_extracted)
     }
-    table_data.value=array_of_rows
+    tableData.value=array_of_rows
 
     isMounted.value=true
 
-    image_src.value="data:image/jpeg;base64,"+extraction_data['image']
+    imageSrc.value="data:image/jpeg;base64,"+extraction_data['image']
   })
   });
   
