@@ -1,8 +1,7 @@
 <template>
   <div >
     <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
-    <button @click="visibleMenu = true">Add parameter</button>
-    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" :selectedValue="selectedValue" />
+
   </div>
 </template>
 
@@ -12,19 +11,13 @@
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
-  import ParameterMenu from './ParameterMenu'
-
   // register Handsontable's modules
   registerAllModules();
-
   export default {
   name: 'ExtractionTable',
   setup(props) {
     const visibleMenu = ref(false);
-
-    const appendParameter = props.appendParameter
-
-    return { visibleMenu, appendParameter };
+    return { visibleMenu };
   },
   data() {
     return {
@@ -58,12 +51,10 @@
     }
   },
     props: {
-      extracted_data: Array,
-      appendParameter: Function
+      extractedData: Array,
     },   
     components: {
       HotTable,
-      ParameterMenu,
     },
     methods: {
         afterSelectionEnd: function (row, column) {
@@ -73,16 +64,21 @@
           this.$emit('cell-selected', row, column, value);
         },
         annotate: function (hotTable, td, row, col, prop, initialValue) {
-          console.log("annotating", this);
-          console.log(arguments);
+          // console.log("annotating", this);
+          // console.log(arguments);
+          
           let value = hotTable.getDataAtCell(row, col);
-          this.selectedValue = value;
-          this.visibleMenu=true
+          
+          this.$emit('visibleMenu', true, );
+
           this.$emit('cell-selected', row, col, value);
         },
         renderCell: function (hotTable, td, row, col, prop, value) {
           td.innerText = value;
-          let button = document.createElement('button');
+          if (value==""){
+            console.log(value)
+          }else{
+            let button = document.createElement('button');
           // button.innerHTML = " ";
           let icon = document.createElement('i')
           icon.className=" pi pi-file-edit"
@@ -95,7 +91,6 @@
           button.style.align_items= "center";
           button.style.backgroundColor="transparent"
           button.style.border="none"
-
           
           button.style.height = '1.4em';
           button.style.width = '1.4em';
@@ -105,13 +100,15 @@
           button.style.backgroundSize = 'contain';
           button.addEventListener("click", () => this.annotate(hotTable, td, row, col, prop, value), false);
           td.appendChild(button);
+          }
+          
           return td;
         },
     },
     beforeMount(){
-      this.hotSettings["data"]=this.extracted_data;
+      console.log(this.extractedData)
+      this.hotSettings["data"]=this.extractedData;
       this.hotSettings['renderer'] = this.renderCell;
-
     },
     mounted(){
       // let hotTable = this.$refs.hotTableComponent.hotInstance;
