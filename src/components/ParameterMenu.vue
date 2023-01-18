@@ -1,8 +1,8 @@
 <template>
 
 <Sidebar 
-     v-model:visible="openMenu"
-     position=left
+     v-model:visible="visibleMenu"
+     position=right
 >
 <div>
         <h3>Annotating parameter:</h3>
@@ -55,22 +55,25 @@ const typeOptions = ref([
   {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
 ]);
 
-const openMenu = computed({
-        get: () => props.visibleMenu,
-        set: sidebarValue => emit('update:visibleMenu', sidebarValue),
-});
-
-const formData = ref({
+const formDefaults = {
         "name": "",
         "type": "",
         "curie": "",
         "defaultValue": props.selectedValue,
         "stateVariable": true,
+};
+
+const visibleMenu = computed({
+        get: () => props.visibleMenu,
+        set: sidebarValue => emit('update:visibleMenu', sidebarValue),
 });
+
+const formData = ref({...formDefaults});
 
 const submit = () => {
   props.appendParameter(formData.value);
   emit('update:visibleMenu', false);
+  formData.value = {...formDefaults};
 };
 
 </script>
