@@ -3,12 +3,7 @@
     <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
     <button v-on:click="swapHotData" class="controls">Load new data!</button>
     <button @click="visibleMenu = true">Add parameter</button>
-    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}"/>
-    <hot-table ref="hotTableComponent" :settings="hotSettings">
-    </hot-table><br/>
-    <!-- <button v-on:click="swapHotData" class="controls">Load new data!</button> -->
-    <button @click="visibleMenu = true">Add parameter</button>
-    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}"/>
+    <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="(param)=>{$el.ownerDocument.defaultView.console.log(param)}" :selectedValue="selectedValue" />
     <!--
     <div>
       <Sidebar v-model:visible="visibleMenu" position="right">
@@ -29,8 +24,6 @@
 <script>
   import { ref } from 'vue';
   import { HotTable } from '@handsontable/vue3';
-  import Handsontable from 'handsontable';
-  import Sidebar from 'primevue/sidebar';
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
@@ -82,8 +75,7 @@
     },   
     components: {
       HotTable,
-      ParameterMenu
-      Sidebar,
+      ParameterMenu,
     },
     methods: {
         afterSelectionEnd: function (row, column) {

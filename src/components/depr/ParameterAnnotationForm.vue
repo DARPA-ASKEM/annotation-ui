@@ -16,7 +16,6 @@
     
     <script>
     import InputText from 'primevue/inputtext';
-    import TextArea from 'primevue/textarea'
     import Button from 'primevue/button'
     import RadioButton from 'primevue/radiobutton';
     import Dropdown from 'primevue/dropdown'
@@ -35,7 +34,6 @@
           },
         components: {
             InputText,
-            TextArea,
             Button,
             Dropdown,
             RadioButton
