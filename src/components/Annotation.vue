@@ -4,7 +4,8 @@
             <ImageComponent :imageSrc="imageSrc" />
             <ExtractionTable @cell-selected="handleCellSelected" v-if="isMounted" :extractedData="tableData"></ExtractionTable>
             <Button class="p-button-sm" @click="addParameter">Add parameter manually</Button>
-            <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" :selectedValue="selectedValue" />
+            <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" 
+                           v-bind:selectedValue="selectedValue" />
 
         </div>
         <div class="col-4">
@@ -16,57 +17,53 @@
 </template>
 
 <script setup>
-import axios from "axios"
-import ExtractionTable from './ExtractionTable.vue' 
-import ParameterMenu from './ParameterMenu.vue'
-import ImageComponent from './ImageComponent.vue'
-import ParameterList from './ParameterList.vue' 
-import {ref, onMounted} from 'vue'
-import Button from 'primevue/button'
+import axios from "axios";
+import ExtractionTable from './ExtractionTable.vue';
+import ParameterMenu from './ParameterMenu.vue';
+import ImageComponent from './ImageComponent.vue';
+import ParameterList from './ParameterList.vue' ;
+import {ref, onMounted} from 'vue';
+import Button from 'primevue/button';
 
-const imageSrc=ref('')
-const tableData=ref([])
-const parameters=ref([])
-const isMounted=ref(false)
-const visibleMenu=ref(false)
-const selectedValue=ref("")
+const imageSrc=ref('');
+const tableData=ref([]);
+const parameters=ref([]);
+const isMounted=ref(false);
+const visibleMenu=ref(false);
+const selectedValue=ref("");
 
-const appendParameter = formData => {parameters.value.concat(formData); console.log(parameters.value);};
+const appendParameter = formData => parameters.value.push(formData);
          
-
 function handleCellSelected(row,cell,value){
-  console.log(cell,row, value)
-  visibleMenu.value=true
-  selectedValue.value=value
+  console.log(cell,row, value);
+  selectedValue.value=value;
+  visibleMenu.value=true;
 }
+
 function addParameter(){
-  selectedValue.value=""
-  visibleMenu.value = true
+  selectedValue.value="";
+  visibleMenu.value = true;
 }
+
 onMounted(() => {
 
   axios.get("https://xdd.wisc.edu/askem/object/e962b768-2969-479b-b90b-9beb372cf5bc").then((resp) => {
-    let extraction_data=resp.data['success']['data'][0]["properties"]
-    let contentJson=extraction_data['contentJSON']
+    let extraction_data=resp.data['success']['data'][0]["properties"];
+    let contentJson=extraction_data['contentJSON'];
 
-    let array_of_rows=[]
+    let rows=[]
     for(let content in contentJson){
-      console.log(content)
       let row_extracted= Object.keys(contentJson[content]).map(key => contentJson[content][key]);
-      array_of_rows.push(row_extracted)
+      rows.push(row_extracted);
     }
-    console.log(array_of_rows)
-    tableData.value=array_of_rows
+    tableData.value=rows;
 
-    isMounted.value=true
+    isMounted.value=true;
 
-    imageSrc.value="data:image/jpeg;base64,"+extraction_data['image']
+    imageSrc.value="data:image/jpeg;base64,"+extraction_data['image'];
   })
   });
   
 
 </script>
 
-<style scoped>
-
-</style>
