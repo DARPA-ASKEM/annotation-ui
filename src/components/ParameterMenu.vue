@@ -11,15 +11,15 @@
         <InputText id="param-name" class="spacer" 
                    type="text" v-model="formData.name" />
 
-        <label for="param-value">Value</label>
+        <label for="param-value">Default Value</label>
         <InputText id="param-value" class="spacer" 
                    type="text" v-model="formData.defaultValue" />
 
-        <Dropdown class="spacer matchInput" v-model="formData.selectedType" 
+        <Dropdown class="spacer matchInput" v-model="formData.type" 
                   :options="typeOptions" optionLabel="name" optionValue="name" 
                   placeholder="Select Type" />
 
-        <br><label for="state-variable">Is this a state variable?</label>
+        <br><label for="state-variable">Is this a State Variable?</label>
         <div id="state-variable" >
         <div class="field-radiobutton">
           <RadioButton inputId="yes" :value="true" v-model="formData.stateVariable" />
@@ -40,50 +40,39 @@
 </Sidebar>
 </template>
 
-<script>
-import { ref, computed, defineComponent } from 'vue';
+<script setup>
+import { ref, computed } from 'vue';
 import Sidebar from 'primevue/sidebar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
 import RadioButton from 'primevue/radiobutton';
 import Dropdown from 'primevue/dropdown'
 
-export default defineComponent({
-	name: 'ParameterMenu',
-        props: ["appendParameter", "visibleMenu", "selectedValue"],
-        setup (props, { emit }) {
-                const formData = ref({
-                        "name": "",
-                        "type": "",
-                        "curie": "",
-                        "defaultValue": props.selectedValue,
-                        "stateVariable": true,
-                });
+const emit = defineEmits(['update:visibleMenu']);
+const props = defineProps(["appendParameter", "visibleMenu", "selectedValue"]);
 
-                const typeOptions = [
-                  {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
-                ];
+const typeOptions = ref([
+  {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
+]);
 
-                const openMenu = computed({
-                        get: () => props.visibleMenu,
-                        set: sidebarValue => emit('update:visibleMenu', sidebarValue),
-                });
+const openMenu = computed({
+        get: () => props.visibleMenu,
+        set: sidebarValue => emit('update:visibleMenu', sidebarValue),
+});
 
-                const submit = () => {
-                  props.appendParameter(formData.value);
-                  emit('update:visibleMenu', false);
-                };
+const formData = ref({
+        "name": "",
+        "type": "",
+        "curie": "",
+        "defaultValue": props.selectedValue,
+        "stateVariable": true,
+});
 
-                return { formData, submit, openMenu };
-        },
-        components: {
-          Sidebar,
-          InputText,
-          Button,
-          RadioButton,
-          Dropdown,
-        },
-})
+const submit = () => {
+  props.appendParameter(formData.value);
+  emit('update:visibleMenu', false);
+};
+
 </script>
 
 
