@@ -14,17 +14,11 @@ const props = defineProps({
 });
 
 
-
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 0 0 0;
 }
 
-img {
-    width:50px; /* you can use % */
-    height: auto;
-}
 </style>
