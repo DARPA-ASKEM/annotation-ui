@@ -64,8 +64,6 @@
           this.$emit('cell-selected', row, column, value);
         },
         annotate: function (hotTable, td, row, col, prop, initialValue) {
-          // console.log("annotating", this);
-          // console.log(arguments);
           
           let value = hotTable.getDataAtCell(row, col);
           
@@ -75,10 +73,8 @@
         },
         renderCell: function (hotTable, td, row, col, prop, value) {
           td.innerText = value;
-          if (value==""){
-            console.log(value)
-          }else{
-            let button = document.createElement('button');
+          if (value!=""){
+          let button = document.createElement('button');
           // button.innerHTML = " ";
           let icon = document.createElement('i')
           icon.className=" pi pi-file-edit"
@@ -106,7 +102,6 @@
         },
     },
     beforeMount(){
-      console.log(this.extractedData)
       this.hotSettings["data"]=this.extractedData;
       this.hotSettings['renderer'] = this.renderCell;
     },

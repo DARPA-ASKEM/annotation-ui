@@ -1,6 +1,6 @@
 <template>
 	<div>
-        <DataTable v-model="parameters" responsiveLayout="scroll">
+        <DataTable :value="parameters" responsiveLayout="scroll">
             <Column field="name" header="Name"></Column>
             <Column field="defaultValue" header="Default"></Column>
             <Column field="type" header="Type"></Column>
@@ -18,7 +18,7 @@ import Column from 'primevue/column';
 const props = defineProps(["parameters"]);
 
 const parameters = computed({
-        get: () => props.visibleMenu,
+        get: () => props.parameters,
         set: sidebarValue => emit('update:parameters', sidebarValue),
 });
 
