@@ -1,16 +1,9 @@
 <template>
   <AnnotationComponent msg="Started Annotation UI"/>
-  
 </template>
 
-<script>
+<script setup>
 import AnnotationComponent from './components/Annotation.vue'
-export default {
-  name: 'App',
-  components: {
-    AnnotationComponent,
-  }
-}
 </script>
 
 <style>

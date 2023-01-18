@@ -1,7 +1,6 @@
 <template>
       <div class="grid">
         <div  class="col">
-        
             <ImageComponent :image_src="image_src"></ImageComponent>
         </div>
         <div class="col-8">
