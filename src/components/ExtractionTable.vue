@@ -16,7 +16,6 @@
   export default {
   name: 'ExtractionTable',
   setup(props) {
-
     const visibleMenu = ref(false);
     return { visibleMenu };
   },
@@ -60,13 +59,13 @@
         afterSelectionEnd: function (row, column) {
           let hotTable = this.$refs.hotTableComponent.hotInstance;
           let value = hotTable.getDataAtCell(row, column);
-          storeCell._rawValue.setSelectedValue(value)         
+          storeCell._rawValue.setSelectedValue(value);         
           this.$emit('cell-selected', row, column, value);
         },
         annotate: function (hotTable, td, row, col, prop, initialValue) {
           
           let value = hotTable.getDataAtCell(row, col);
-          storeCell.value.setSelectedValue(value)     
+          storeCell.value.setSelectedValue(value);     
           this.$emit('visibleMenu', true, );
           this.$emit('cell-selected', row, col, value);
         },
@@ -74,14 +73,14 @@
           td.innerText = value;
           if (value!=""){
           let button = document.createElement('button');
-          let icon = document.createElement('i')
-          icon.className=" pi pi-file-edit"
-          icon.style.float="center"
-          icon.style
-          button.appendChild(icon)
+          let icon = document.createElement('i');
+          icon.className=" pi pi-file-edit";
+          icon.style.float="center";
+          icon.style;
+          button.appendChild(icon);
           button.style.align_items= "center";
-          button.style.backgroundColor="transparent"
-          button.style.border="none"
+          button.style.backgroundColor="transparent";
+          button.style.border="none";
           button.style.height = '1.4em';
           button.style.width = '1.4em';
           button.style.position = 'relative';
