@@ -52,7 +52,7 @@ const emit = defineEmits(['update:visibleMenu']);
 const props = defineProps(["appendParameter", "visibleMenu", "selectedValue"]);
 
 const typeOptions = ref([
-  {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
+  {name: 'int'}, {name:"str"},{name:"bool"},{name:"float"}, {name:"binary"}
 ]);
 
 
@@ -72,7 +72,7 @@ const visibleMenu = computed({
 });
 
 const submit = () => {
-  props.appendParameter(formData.value);
+  props.appendParameter({...formData.value});
   emit('update:visibleMenu', false);
   formData.value = {...formDefaults};
 };
