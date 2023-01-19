@@ -6,14 +6,14 @@
 >
 <div>
         <h3>Annotating parameter:</h3>
-
+{{ defaultValue }}
         <label for="param-name">Name</label>
         <InputText id="param-name" class="spacer" 
                    type="text" v-model="formData.name" />
 
         <label for="param-value">Default Value</label>
         <InputText id="param-value" class="spacer" 
-                   type="text" v-model="formData.defaultValue" />
+                   type="text" v-model="props.selectedValue"  @input="(event) => $emit('update:selectedValue', event.target.value)" />
 
         <Dropdown class="spacer matchInput" v-model="formData.type" 
                   :options="typeOptions" optionLabel="name" optionValue="name" 
@@ -41,26 +41,27 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, toRef} from 'vue';
 import Sidebar from 'primevue/sidebar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
 import RadioButton from 'primevue/radiobutton';
 import Dropdown from 'primevue/dropdown'
 
-const emit = defineEmits(['update:visibleMenu']);
+const emit = defineEmits(['update:visibleMenu','update:selectedValue']);
 const props = defineProps(["appendParameter", "visibleMenu", "selectedValue"]);
 
 const typeOptions = ref([
   {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
 ]);
 
+const defaultValue = toRef(props,'selectedValue'); // react to prop
 
 const formDefaults = {
         "name": "",
         "type": "",
         "curie": "",
-        "defaultValue": props.selectedValue,
+        "defaultValue": defaultValue.value,
         "stateVariable": true,
 };
 
@@ -73,6 +74,7 @@ const visibleMenu = computed({
 
 const submit = () => {
   props.appendParameter(formData.value);
+  formData.value.defaultValue=defaultValue.value;
   emit('update:visibleMenu', false);
   formData.value = {...formDefaults};
 };

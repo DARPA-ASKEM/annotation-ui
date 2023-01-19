@@ -4,9 +4,9 @@
             <ImageComponent :imageSrc="imageSrc" />
             <ExtractionTable @cell-annotation="handleCellAnnotation" @cell-selection="handleCellSelection" v-if="isMounted" :extractedData="tableData"></ExtractionTable>
             <Button class="p-button-sm" @click="addParameter">Add parameter manually</Button>
-            <ParameterMenu :key="componentKey" v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" 
-                           v-bind:selectedValue="selectedValue" />
-
+            <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" 
+                           v-model:selectedValue="selectedValue" />
+          {{ selectedValue }}
         </div>
         <div class="col-4">
             <ParameterList v-model:parameters="parameters"/>
@@ -31,21 +31,19 @@ const parameters=ref([]);
 const isMounted=ref(false);
 const visibleMenu=ref(false);
 const selectedValue=ref("");
-const componentKey = ref(0);
-const forceRerender = () => {
-  componentKey.value += 1;
-};
+
+
 const appendParameter = formData => parameters.value.push(formData);
          
 function handleCellAnnotation(row,cell,value){
   console.log(cell,row, value)
   visibleMenu.value=true
   selectedValue.value=value
+  console.log(selectedValue)
 }
 
 function addParameter(){
   selectedValue.value="";
-  forceRerender()
   visibleMenu.value = true;
 }
 function handleCellSelection() {
