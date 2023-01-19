@@ -4,7 +4,7 @@
             <ImageComponent :imageSrc="imageSrc" />
             <ExtractionTable @cell-selected="handleCellSelected" v-if="isMounted" :extractedData="tableData" ></ExtractionTable>
             <Button class="p-button-sm" @click="addParameter">Add parameter manually</Button>
-            <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" />
+            <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" :selectedValue="selectedValue"/>
         </div>
         <div class="col-4">
             <ParameterList v-model:parameters="parameters"/>
@@ -29,12 +29,12 @@ const tableData=ref([]);
 const parameters=ref([]);
 const isMounted=ref(false);
 const visibleMenu=ref(false);
-
+const selectedValue=ref("")
 
 const appendParameter = formData => parameters.value.push(formData);
          
 function handleCellSelected(row,cell,value){
-  console.log(cell,row, value);
+  selectedValue.value=(value)
   visibleMenu.value=true;
 }
 

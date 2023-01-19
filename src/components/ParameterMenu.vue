@@ -12,7 +12,7 @@
 
         <label for="param-value">Default Value</label>
         <InputText id="param-value" class="spacer" 
-                   type="text" v-model="storeCell.selectedValue" />
+                   type="text" v-model="defaultValue" />
 
         <Dropdown class="spacer matchInput" v-model="formData.type" 
                   :options="typeOptions" optionLabel="name" optionValue="name" 
@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import Sidebar from 'primevue/sidebar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
@@ -49,21 +49,25 @@ import Dropdown from 'primevue/dropdown'
 import { storeCell } from '../stores/cellValue.js';
 
 const emit = defineEmits(['update:visibleMenu']);
-const props = defineProps(["appendParameter", "visibleMenu"]);
+const props = defineProps(["appendParameter", "visibleMenu","selectedValue"]);
 
 const typeOptions = ref([
   {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
 ]);
+const defaultValue=ref(props.selectedValue)
+watch(props.selectedValue,console.log)
 
-const formDefaults = {
+const formDefaults = ref({
         "name": "",
         "type": "",
         "curie": "",
-        "defaultValue": "",
+        "defaultValue": props.selectedValue,
         "stateVariable": true,
-      }
+      });
+console.log(formDefaults.value)
 
-const formData = ref({...formDefaults});
+const formData = ref({...formDefaults.value});
+console.log(formData.value)
 
 const visibleMenu = computed({
         get: () => props.visibleMenu,
