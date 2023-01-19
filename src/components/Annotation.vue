@@ -2,7 +2,7 @@
       <div class="grid">
         <div class="col-8">
             <ImageComponent :imageSrc="imageSrc" />
-            <ExtractionTable @cell-selected="handleCellSelected" v-if="isMounted" :extractedData="tableData"></ExtractionTable>
+            <ExtractionTable @cell-annotation="handleCellAnnotation" @cell-selection="handleCellSelection" v-if="isMounted" :extractedData="tableData"></ExtractionTable>
             <Button class="p-button-sm" @click="addParameter">Add parameter manually</Button>
             <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" :selectedValue="selectedValue" />
 
@@ -34,7 +34,7 @@ const selectedValue=ref("")
 const appendParameter = formData => {parameters.value.concat(formData); console.log(parameters.value);};
          
 
-function handleCellSelected(row,cell,value){
+function handleCellAnnotation(row,cell,value){
   console.log(cell,row, value)
   visibleMenu.value=true
   selectedValue.value=value
@@ -42,6 +42,9 @@ function handleCellSelected(row,cell,value){
 function addParameter(){
   selectedValue.value=""
   visibleMenu.value = true
+}
+function handleCellSelection() {
+  console.log("Selection", ...arguments);
 }
 onMounted(() => {
 
@@ -51,11 +54,11 @@ onMounted(() => {
 
     let array_of_rows=[]
     for(let content in contentJson){
-      console.log(content)
+      // console.log(content)
       let row_extracted= Object.keys(contentJson[content]).map(key => contentJson[content][key]);
       array_of_rows.push(row_extracted)
     }
-    console.log(array_of_rows)
+    // console.log(array_of_rows)
     tableData.value=array_of_rows
 
     isMounted.value=true
