@@ -6,7 +6,6 @@
 >
 <div>
         <h3>Annotating parameter:</h3>
-{{ defaultValue }}
         <label for="param-name">Name</label>
         <InputText id="param-name" class="spacer" 
                    type="text" v-model="formData.name" />

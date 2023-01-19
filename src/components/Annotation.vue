@@ -6,7 +6,6 @@
             <Button class="p-button-sm" @click="addParameter">Add parameter manually</Button>
             <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" 
                            v-model:selectedValue="selectedValue" />
-          {{ selectedValue }}
         </div>
         <div class="col-4">
             <ParameterList v-model:parameters="parameters"/>
