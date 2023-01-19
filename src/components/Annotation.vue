@@ -35,10 +35,9 @@ const selectedValue=ref("");
 const appendParameter = formData => parameters.value.push(formData);
          
 function handleCellAnnotation(row,cell,value){
-  console.log(cell,row, value)
-  visibleMenu.value=true
-  selectedValue.value=value
-  console.log(selectedValue)
+  console.log(cell,row, value);
+  visibleMenu.value=true;
+  selectedValue.value=value;
 }
 
 function addParameter(){
