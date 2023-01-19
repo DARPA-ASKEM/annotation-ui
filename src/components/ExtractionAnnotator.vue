@@ -32,7 +32,7 @@ const parameters=ref([]);
 const isMounted=ref(false);
 const isMenuVisible=ref(false);
 const selectedValue=ref("");
-
+const xddId=ref(null)
 
 const appendParameter = formData => parameters.value.push(formData);
          
@@ -51,10 +51,8 @@ function removeParameter(parameterIndex) {
 function handleCellSelection() {
   console.log("Selection", ...arguments);
 }
-
-onMounted(() => {
-
-  axios.get("https://xdd.wisc.edu/askem/object/e962b768-2969-479b-b90b-9beb372cf5bc").then((resp) => {
+function getXDDArtifact(xddId){
+  axios.get("https://xdd.wisc.edu/askem/object/"+xddId).then((resp) => {
     let extraction_data=resp.data['success']['data'][0]["properties"];
     let contentJson=extraction_data['contentJSON'];
 
@@ -64,12 +62,21 @@ onMounted(() => {
       rows.push(row_extracted);
     }
     tableData.value=rows;
+    console.log(tableData)
 
     isMounted.value=true;
 
     imageSrc.value="data:image/jpeg;base64,"+extraction_data['image'];
+
   })
+}
+onMounted(() => {
+  xddId.value = (new URLSearchParams(document.location.search)).get('id');
+  if(xddId.value !==null){
+    getXDDArtifact(xddId.value)
+
+  }
+ 
   });
   
-
 </script>
