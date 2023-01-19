@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, computed ,onMounted} from 'vue';
+import { ref, computed } from 'vue';
 import Sidebar from 'primevue/sidebar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
@@ -62,10 +62,6 @@ const formDefaults = {
         "defaultValue": "",
         "stateVariable": true,
       }
-onMounted(() => {
-  
-      });
-
 
 const formData = ref({...formDefaults});
 
@@ -80,7 +76,6 @@ const submit = () => {
   formData.value = {...formDefaults};
   formData.value.defaultValue=storeCell.value.selectedValue
   props.appendParameter(formData.value);
-
 
 };
 

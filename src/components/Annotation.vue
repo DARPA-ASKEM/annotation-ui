@@ -35,14 +35,10 @@ const appendParameter = formData => parameters.value.push(formData);
          
 function handleCellSelected(row,cell,value){
   console.log(cell,row, value);
-
-  // storeCell._rawValue.setSelectedValue(value);
-  // forceRerender()
   visibleMenu.value=true;
 }
 
 function addParameter(){
-
   storeCell.value.setSelectedValue("");
   visibleMenu.value = true;
 }
