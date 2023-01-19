@@ -1,7 +1,7 @@
 <template>
   <div >
     <hot-table ref="hotTableComponent" :settings="hotSettings"></hot-table><br/>
-
+    <!-- {{ storeCell.selectedValue }} -->
   </div>
 </template>
 
@@ -11,18 +11,19 @@
   import { registerAllModules } from 'handsontable/registry';
   import 'handsontable/dist/handsontable.full.css';
   import { ContextMenu } from 'handsontable/plugins/contextMenu';
+  import { storeCell } from '../stores/cellValue.js';
   // register Handsontable's modules
   registerAllModules();
   export default {
   name: 'ExtractionTable',
   setup(props) {
+
     const visibleMenu = ref(false);
     return { visibleMenu };
   },
   data() {
     return {
       visibleMenu:false,
-      selectedValue: "value",
       annotatedCells: [],
       hotSettings: {
         data: [],
@@ -60,13 +61,14 @@
         afterSelectionEnd: function (row, column) {
           let hotTable = this.$refs.hotTableComponent.hotInstance;
           let value = hotTable.getDataAtCell(row, column);
-          this.selectedValue = value;
+          storeCell._rawValue.setSelectedValue(value)         
+
           this.$emit('cell-selected', row, column, value);
         },
         annotate: function (hotTable, td, row, col, prop, initialValue) {
           
           let value = hotTable.getDataAtCell(row, col);
-          
+          storeCell.value.setSelectedValue(value)     
           this.$emit('visibleMenu', true, );
 
           this.$emit('cell-selected', row, col, value);
