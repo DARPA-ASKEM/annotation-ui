@@ -73,9 +73,9 @@ const visibleMenu = computed({
 const submit = () => {
 
   emit('update:visibleMenu', false);
-  formData.value = {...formDefaults};
   formData.value.defaultValue=storeCell.value.selectedValue
   props.appendParameter(formData.value);
+  formData.value = {...formDefaults};
 
 };
 
