@@ -80,7 +80,6 @@
       button.addEventListener("click", () => annotate(td, row, col, prop, value), false);
       td.appendChild(button);
     }
-    
     return td;
   }
 
