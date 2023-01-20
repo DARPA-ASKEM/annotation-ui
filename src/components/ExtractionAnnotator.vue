@@ -13,12 +13,12 @@
         </div>
         <div v-if="xddIdNotFound" class=col-12>
           <h1>XDD ID was not set in the url parameter.</h1>
-            For local development you can set the url to http://localhost:8080/?id=e962b768-2969-479b-b90b-9beb372cf5bc
+          For local development you can set the url to 
+          <a href="http://localhost:8080/?id=e962b768-2969-479b-b90b-9beb372cf5bc">http://localhost:8080/?id=e962b768-2969-479b-b90b-9beb372cf5bc</a>
         </div>
     </div>
 
 </template>
-            <!-- appendParameter="appendParameter"  -->
 
 <script setup>
 import axios from "axios";
