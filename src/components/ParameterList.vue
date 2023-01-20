@@ -28,6 +28,9 @@ import Column from 'primevue/column';
 import Button from 'primevue/button';
 import axios from 'axios';
 import toSnakeCase from '../utils.js';
+import { createToaster } from "@meforma/vue-toaster";
+
+const toaster = createToaster({position: "top-right",duration:700});
 
 const emit = defineEmits(['update:parameters', 'parameter-removed']);
 const props = defineProps(["parameters"]);
@@ -41,10 +44,16 @@ const removeParam = ({ index }) => emit('parameter-removed', index);
 const submit = () => {
         axios.post('http://localhost:8001/parameters', parameters.value.map(toSnakeCase))
           .then(function (response) {
-            console.log(response);
+            if (response.status===201){
+              toaster.success("Success");
+              parameters.value=[]
+            }
           })
           .catch(function (error) {
             console.log(error);
+            toaster.error("Error");
+            
+
           });
 };
 
