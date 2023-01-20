@@ -52,7 +52,7 @@ const props = defineProps(["isMenuVisible", "selectedValue"]);
 // const visible = ref(props.isMenuVisible);
 
 const typeOptions = ref([
-  {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
+  {name: 'int'}, {name:"str"},{name:"bool"},{name:"float"}, {name:"binary"}
 ]);
 
 const formDefaults = {
@@ -73,9 +73,9 @@ const isMenuVisible = computed({
 });
 
 const submit = () => {
-  // props.appendParameter(formData.value);
   emit('parameter-appended', formData.value);
   emit('update:isMenuVisible', false);
+  // formData.value = {...formDefaults};
 };
 
 </script>

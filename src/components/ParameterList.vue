@@ -26,18 +26,27 @@ import { ref, computed, defineProps, defineEmits } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import axios from 'axios';
+import toSnakeCase from '../utils.js';
 
 const emit = defineEmits(['update:parameters', 'parameter-removed']);
 const props = defineProps(["parameters"]);
 
-const removeParam = ({ index }) => parameters.value.splice(index, 1);
-const submit = () => {};
-
 const parameters = computed({
         get: () => props.parameters,
-        set: sidebarValue => emit('update:parameters', sidebarValue),
+        set: val => emit('update:parameters', val),
 });
 
+const removeParam = ({ index }) => parameters.value.splice(index, 1);
+const submit = () => {
+        axios.post('http://localhost:8001/parameters', parameters.value.map(toSnakeCase))
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+};
 
 </script>
 
