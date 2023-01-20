@@ -1,20 +1,21 @@
 <template>
+    <h1>Matt's computer</h1>
       <div class="grid">
         <div class="col-8">
             <ImageComponent :imageSrc="imageSrc" />
-            <ExtractionTable @cell-selected="handleCellSelected" v-if="isMounted" :extractedData="tableData"></ExtractionTable>
+            <ExtractionTable @cell-annotation="handleCellAnnotation" @cell-selection="handleCellSelection" v-if="isMounted" :extractedData="tableData"></ExtractionTable>
             <Button class="p-button-sm" @click="addParameter">Add parameter manually</Button>
-            <ParameterMenu :key="componentKey" v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" 
-                           v-bind:selectedValue="selectedValue" />
-
+            <ParameterMenu v-if="isMenuVisible" v-model:isMenuVisible="isMenuVisible" @parameter-appended="appendParameter"
+                           :selectedValue="selectedValue" />
         </div>
         <div class="col-4">
-            <ParameterList v-model:parameters="parameters"/>
+            <ParameterList v-model:parameters="parameters" @parameter-removed="removeParameter"/>
 
         </div>
     </div>
 
 </template>
+            <!-- appendParameter="appendParameter"  -->
 
 <script setup>
 import axios from "axios";
@@ -29,25 +30,26 @@ const imageSrc=ref('');
 const tableData=ref([]);
 const parameters=ref([]);
 const isMounted=ref(false);
-const visibleMenu=ref(false);
+const isMenuVisible=ref(false);
 const selectedValue=ref("");
-const componentKey = ref(0);
-const forceRerender = () => {
-  componentKey.value += 1;
-};
+
+
 const appendParameter = formData => parameters.value.push(formData);
          
-function handleCellSelected(row,cell,value){
-  console.log(cell,row, value);
+function handleCellAnnotation(row,cell,value){
   selectedValue.value=value;
-  forceRerender()
-  visibleMenu.value=true;
+  isMenuVisible.value=true;
 }
 
 function addParameter(){
   selectedValue.value="";
-  forceRerender()
-  visibleMenu.value = true;
+  isMenuVisible.value = true;
+}
+function removeParameter(parameterIndex) {
+  parameters.value.splice(parameterIndex, 1);
+}
+function handleCellSelection() {
+  console.log("Selection", ...arguments);
 }
 
 onMounted(() => {
@@ -71,4 +73,3 @@ onMounted(() => {
   
 
 </script>
-
