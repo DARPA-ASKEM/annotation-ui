@@ -1,5 +1,5 @@
 <template>
-  <AnnotationComponent msg="Started Annotation UI"/>
+  <AnnotationComponent/>
 </template>
 
 <script setup>
