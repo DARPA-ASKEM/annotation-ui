@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import AnnotationComponent from './components/Annotation.vue'
+import AnnotationComponent from './components/ExtractionAnnotator.vue'
 </script>
 
 <style>
