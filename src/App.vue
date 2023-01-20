@@ -1,7 +1,5 @@
 <template>
-    <!-- <router-link :to="{ name: 'Annotation', }">Home</router-link> | -->
-    <router-view />
-  <!-- <AnnotationComponent msg="Started Annotation UI"/> -->
+  <AnnotationComponent/>
 </template>
 
 <script setup>

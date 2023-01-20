@@ -1,5 +1,4 @@
 <template>
-    <h1>Matt's computer</h1>
       <div class="grid">
         <div class="col-8">
             <ImageComponent :imageSrc="imageSrc" />
@@ -62,7 +61,6 @@ function getXDDArtifact(xddId){
       rows.push(row_extracted);
     }
     tableData.value=rows;
-    console.log(tableData)
 
     isMounted.value=true;
 
