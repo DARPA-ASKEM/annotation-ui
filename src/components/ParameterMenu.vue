@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch} from 'vue';
+import { ref, computed, defineEmits, defineProps} from 'vue';
 import Sidebar from 'primevue/sidebar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'

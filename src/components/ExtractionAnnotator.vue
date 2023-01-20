@@ -46,7 +46,7 @@ function addParameter(){
   isMenuVisible.value = true;
 }
 function removeParameter(parameterIndex) {
-  parameters.value.splice(index, 1);
+  parameters.value.splice(parameterIndex, 1);
 }
 function handleCellSelection() {
   console.log("Selection", ...arguments);
@@ -73,4 +73,3 @@ onMounted(() => {
   
 
 </script>
-
