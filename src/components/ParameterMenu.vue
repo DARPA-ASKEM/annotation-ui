@@ -1,7 +1,7 @@
 <template>
 
 <Sidebar 
-     v-model:visible="visibleMenu"
+     v-model:visible="isMenuVisible"
      position=right
 >
 <div>
@@ -12,7 +12,7 @@
 
         <label for="param-value">Default Value</label>
         <InputText id="param-value" class="spacer" 
-                   type="text" v-model="props.selectedValue"  @input="(event) => $emit('update:selectedValue', event.target.value)" />
+                   type="text" v-model="formData.defaultValue"  />
 
         <Dropdown class="spacer matchInput" v-model="formData.type" 
                   :options="typeOptions" optionLabel="name" optionValue="name" 
@@ -40,42 +40,42 @@
 </template>
 
 <script setup>
-import { ref, computed, toRef} from 'vue';
+import { ref, computed, watch} from 'vue';
 import Sidebar from 'primevue/sidebar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
 import RadioButton from 'primevue/radiobutton';
 import Dropdown from 'primevue/dropdown'
 
-const emit = defineEmits(['update:visibleMenu','update:selectedValue']);
-const props = defineProps(["appendParameter", "visibleMenu", "selectedValue"]);
+const emit = defineEmits(['update:isMenuVisible', 'parameter-appended']);
+const props = defineProps(["isMenuVisible", "selectedValue"]);
+// const visible = ref(props.isMenuVisible);
 
 const typeOptions = ref([
   {name: 'int'}, {name:"string"},{name:"boolean"},{name:"float"}
 ]);
 
-const defaultValue = toRef(props,'selectedValue'); // react to prop
-
 const formDefaults = {
         "name": "",
         "type": "",
         "curie": "",
-        "defaultValue": defaultValue.value,
+        "defaultValue": props.selectedValue,
+        // "defaultValue": "",
         "stateVariable": true,
 };
-
 const formData = ref({...formDefaults});
 
-const visibleMenu = computed({
-        get: () => props.visibleMenu,
-        set: sidebarValue => emit('update:visibleMenu', sidebarValue),
+// watch(visible, async () => console.log);
+
+const isMenuVisible = computed({
+        get: () => props.isMenuVisible,
+        set: sidebarValue => emit('update:isMenuVisible', sidebarValue),
 });
 
 const submit = () => {
-  props.appendParameter(formData.value);
-  formData.value.defaultValue=defaultValue.value;
-  emit('update:visibleMenu', false);
-  formData.value = {...formDefaults};
+  // props.appendParameter(formData.value);
+  emit('parameter-appended', formData.value);
+  emit('update:isMenuVisible', false);
 };
 
 </script>

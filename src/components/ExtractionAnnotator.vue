@@ -1,19 +1,21 @@
 <template>
+    <h1>Matt's computer</h1>
       <div class="grid">
         <div class="col-8">
             <ImageComponent :imageSrc="imageSrc" />
             <ExtractionTable @cell-annotation="handleCellAnnotation" @cell-selection="handleCellSelection" v-if="isMounted" :extractedData="tableData"></ExtractionTable>
             <Button class="p-button-sm" @click="addParameter">Add parameter manually</Button>
-            <ParameterMenu v-model:visibleMenu="visibleMenu" :appendParameter="appendParameter" 
-                           v-model:selectedValue="selectedValue" />
+            <ParameterMenu v-if="isMenuVisible" v-model:isMenuVisible="isMenuVisible" @parameter-appended="appendParameter"
+                           :selectedValue="selectedValue" />
         </div>
         <div class="col-4">
-            <ParameterList v-model:parameters="parameters"/>
+            <ParameterList v-model:parameters="parameters" @parameter-removed="removeParameter"/>
 
         </div>
     </div>
 
 </template>
+            <!-- appendParameter="appendParameter"  -->
 
 <script setup>
 import axios from "axios";
@@ -28,25 +30,28 @@ const imageSrc=ref('');
 const tableData=ref([]);
 const parameters=ref([]);
 const isMounted=ref(false);
-const visibleMenu=ref(false);
+const isMenuVisible=ref(false);
 const selectedValue=ref("");
 
 
 const appendParameter = formData => parameters.value.push(formData);
          
 function handleCellAnnotation(row,cell,value){
-  console.log(cell,row, value);
-  visibleMenu.value=true;
   selectedValue.value=value;
+  isMenuVisible.value=true;
 }
 
 function addParameter(){
   selectedValue.value="";
-  visibleMenu.value = true;
+  isMenuVisible.value = true;
+}
+function removeParameter(parameterIndex) {
+  parameters.value.splice(index, 1);
 }
 function handleCellSelection() {
   console.log("Selection", ...arguments);
 }
+
 onMounted(() => {
 
   axios.get("https://xdd.wisc.edu/askem/object/e962b768-2969-479b-b90b-9beb372cf5bc").then((resp) => {
