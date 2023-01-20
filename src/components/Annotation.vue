@@ -89,16 +89,8 @@ function getXDDArtifact(xddId){
   })
 }
 onMounted(() => {
-  // const id = route.params.id
-  // console.log(id)
-  let urlParams = new URLSearchParams(window.location.search);
-  console.log(); // true
-  xddId.value=urlParams.get('id')
-  console.log(xddId.value)
-  // console.log(urlParams)
-  // const id = computed(() => route.params.id);
-  // console.log('hereere')
-  // console.log(id)
+  let params = (new URL(document.location)).searchParams;
+  xddId.value=params.get('id')
   getXDDArtifact(xddId.value)
  
   });
